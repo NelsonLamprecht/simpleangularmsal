@@ -1,20 +1,29 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Angular 17 Standalone MSAL Angular v3 Sample
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This developer sample is used to demonstrate how to use `@azure/msal-angular` with Angular standalone components, and **does not** use the `MsalModule` or `cd `. Please see [Angular's docs on standalone](https://angular.io/guide/standalone-components) for more information.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3, and uses Angular 17's application builder, but **does not** demonstrate use of server-side and prerendering capabilities. See [Angular's docs](https://angular.io/guide/esbuild) for more details.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## How to run the sample
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### Pre-requisites
+- Ensure [all pre-requisites](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/README.md) have been completed to run msal-angular.
+
+### Configure the application
+- Open `./src/app/app.config.ts` in an editor.
+- Replace client ID with the Application (client) ID from the portal registration, or use the currently configured lab registration.
+  - Optionally, you may replace any of the other parameters (tenant ID, redirect URI, scopes, etc.), or you can remove them and use the default values.
+- You can also change the client ID, tenant ID, or scopes in the `./src/environments` folder.
+
+### Running the sample
+- In a command prompt, run `npm run start`.
+- Navigate to [http://localhost:4200](http://localhost:4200)
+- In the web page, click on the "Login" button. The app will automatically reload if you change any of the source files.
+
+## Local development
+
+If you are trying to run this sample locally in the MSAL.js repo, run `npm run build` before `npm run start` to install a tarball file of MSAL Angular.
+
+## Additional notes
+- This sample does not use the `MsalRedirectComponent`, but subscribes to `handleRedirectObservable` in the `app.component.ts` file. See our doc on [redirects](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/redirects.md) for more information.
+- The default interaction type for the sample is redirects. The sample can be configured to use redirects by changing the `interactionType` in `main.ts` to `InteractionType.Popup`. 

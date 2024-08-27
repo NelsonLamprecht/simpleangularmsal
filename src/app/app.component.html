@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <a class="title" href="/">{{ title }}</a>
+  <div class="toolbar-spacer"></div>
+  <a mat-button [routerLink]="['profile']">Profile</a>
+
+  @if (!loginDisplay) {
+    <a mat-button (click)="loginRedirect()">Login</a>
+  }  
+
+  @if (loginDisplay) {
+    <a mat-button [routerLink]="['logout']">Logout</a>
+  }  
+
+</mat-toolbar>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  @if (!isIframe) {
+  <router-outlet></router-outlet>
+  }
+</div>
