@@ -3,13 +3,12 @@
   <div class="toolbar-spacer"></div>
   <a mat-button [routerLink]="['profile']">Profile</a>
 
-  @if (!loginDisplay) {
-    <a mat-button (click)="loginRedirect()">Login</a>
-  }  
-
   @if (loginDisplay) {
-    <a mat-button [routerLink]="['logout']">Logout</a>
+    <a mat-button (click)="logout()">Logout</a>
   }  
+  @else {
+    <a mat-button (click)="loginRedirect()">Login</a>
+  }
 
 </mat-toolbar>
 <div class="container">
