@@ -33,7 +33,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
         loggerCallback,
         logLevel: LogLevel.Verbose,
         piiLoggingEnabled: false
-      }
+      }      
     }
   });
 }
@@ -50,12 +50,13 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return { 
-    interactionType: InteractionType.Popup,
+    interactionType: InteractionType.Redirect,
     authRequest: {
       scopes: [...environment.apiConfig.scopes],
       // extraQueryParameters: {
       //   domain_hint: 'loves.com'
       // },
+      prompt: 'login', // forces the user to login, even if they have an existing session
     },
     loginFailedRoute: '/login-failed'
   };

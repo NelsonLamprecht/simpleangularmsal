@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink} from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { MsalService, MsalModule, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
-import { AuthenticationResult, InteractionStatus, PopupRequest, RedirectRequest, EventMessage, EventType, EndSessionRequest } from '@azure/msal-browser';
+import { InteractionStatus, RedirectRequest, EventMessage, EventType } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
@@ -35,14 +35,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.setLoginDisplay();
 
+    this.authService.instance.clearCache
+
     this.authService.instance.enableAccountStorageEvents(); // Optional - This will enable ACCOUNT_ADDED and ACCOUNT_REMOVED events emitted when a user logs in or out of another tab or window
     this.msalBroadcastService.msalSubject$
       .pipe(
         filter((msg: EventMessage) => msg.eventType === EventType.ACCOUNT_ADDED || msg.eventType === EventType.ACCOUNT_REMOVED),
       )
       .subscribe((result: EventMessage) => {
+        debugger;
         if (this.authService.instance.getAllAccounts().length === 0) {
-          window.location.pathname = "/";
+          //window.location.pathname = "/";
         } else {
           this.setLoginDisplay();
         }
@@ -53,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
         filter((status: InteractionStatus) => status === InteractionStatus.None),
         takeUntil(this._destroying$)
       )
-      .subscribe(() => {
+      .subscribe((x) => {
         this.setLoginDisplay();
         this.checkAndSetActiveAccount();
       })
@@ -69,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * To use active account set here, subscribe to inProgress$ first in your component
      * Note: Basic usage demonstrated. Your app may require more complicated account selection logic
      */
+    var accounts = this.authService.instance.getAllAccounts();
     let activeAccount = this.authService.instance.getActiveAccount();
 
     if (!activeAccount && this.authService.instance.getAllAccounts().length > 0) {
@@ -85,13 +89,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   } 
 
-  logout() { 
-    localStorage.clear();
+  logout() {
+    const activeAccount = this.authService.instance.getActiveAccount() ?? undefined;
     this.authService.logoutRedirect({
-      onRedirectNavigate: () => {
-        window.location.href = "/";
-        return false;
-      }
+      logoutHint: activeAccount?.idTokenClaims?.login_hint
     });
   }  
 

@@ -2,7 +2,8 @@
   <a class="title" href="/">{{ title }}</a>
   <div class="toolbar-spacer"></div>
   <a mat-button [routerLink]="['profile']">Profile</a>
-
+  <a mat-button [routerLink]="['guarded']">Guarded</a>
+  
   @if (loginDisplay) {
     <a mat-button (click)="logout()">Logout</a>
   }  
