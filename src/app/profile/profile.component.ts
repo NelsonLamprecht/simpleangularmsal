@@ -1,46 +1,35 @@
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+
+import { Observable } from 'rxjs';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-browser';
 
-type ProfileType = {
-  givenName?: string,
-  surname?: string,
-  userPrincipalName?: string,
-  id?: string,
-  roles?: string[]
-};
+import { ProfileType } from 'src/app/models/profile.type';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls: [],
+    imports: [AsyncPipe,CommonModule],
     standalone: true
 })
-export class ProfileComponent implements OnInit {
-  profile: ProfileType | undefined;
+export class ProfileComponent implements OnInit {  
+  givenName$: Observable<string> | undefined;
+  profile$: Observable<ProfileType> | undefined;
   account: AccountInfo | null = null;
+  roles: string[] | undefined;
 
   constructor(
-    private http: HttpClient,
-    private authService: MsalService,
+    private readonly authService: MsalService,
+    private readonly profileService: ProfileService
   ) {
   }
 
   ngOnInit() {
-    this.account = this.authService.instance.getActiveAccount();
-    this.profile!.roles = this.account?.idTokenClaims?.roles;
-    this.getProfile(environment.apiConfig.uri);
+    this.roles = this.authService.instance.getActiveAccount()?.idTokenClaims?.roles;
+    this.profile$ = this.profileService.getProfile();
   }
 
-  getProfile(url: string) {
-    this.http.get(url)
-      .subscribe((data: ProfileType) => {
-        this.profile!.givenName = data.givenName;
-        this.profile!.surname = data.surname;
-        this.profile!.userPrincipalName = data.userPrincipalName;
-        this.profile!.id = data.id;
-      });
-  }
 }
