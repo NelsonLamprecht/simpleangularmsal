@@ -3,7 +3,9 @@ export const environment = {
 	msalConfig: {
 		auth: {
 			  clientId: 'd2aeae93-ca05-40b1-9032-7e7842054ad8', //drink redemption
-			  authority: 'https://login.microsoftonline.com/80132c19-eaaa-4b91-acf7-a3ed9a50c97b' // loves prod
+			  authority: 'https://login.microsoftonline.com/80132c19-eaaa-4b91-acf7-a3ed9a50c97b', // loves prod
+			  redirectUri: 'https://ambitious-hill-09d2abc0f.5.azurestaticapps.net',
+              postLogoutRedirectUri: 'https://ambitious-hill-09d2abc0f.5.azurestaticapps.net/logout'
 		}
 	},
 	apiConfig: {
